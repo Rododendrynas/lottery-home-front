@@ -1,0 +1,16 @@
+.dice {
+  min-width: 10rem;
+  min-height: 10rem;
+  border: 1px solid goldenrod;
+  margin-right: 3rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.dice:nth-child(3n) {
+  margin-right: 0;
+}

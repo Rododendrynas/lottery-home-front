@@ -1,0 +1,25 @@
+.menu {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+img {
+  height: 6rem;
+}
+
+a {
+  margin-left: 2rem;
+  color: gold;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: red;
+  cursor: pointer;
+}

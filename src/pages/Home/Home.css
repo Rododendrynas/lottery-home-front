@@ -1,0 +1,10 @@
+body {
+  background: black;
+  color: gold;
+}
+
+.wrapper {
+  max-width: 40%;
+  margin: 0 auto;
+  text-align: center;
+}

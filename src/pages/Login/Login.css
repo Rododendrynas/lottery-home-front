@@ -1,0 +1,18 @@
+.input,
+textarea {
+  margin-bottom: 1rem;
+  width: 100%;
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+  border: 1px solid rgb(95, 93, 93);
+}
+
+.form {
+  max-width: 40%;
+  margin: 0 auto;
+  margin-top: 3rem;
+}
+
+.label {
+  font-weight: bold;
+}
