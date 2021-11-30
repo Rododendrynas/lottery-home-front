@@ -8,7 +8,8 @@ const DiceGame = () => {
   const authContext = useContext(AuthContext);
   const [error, setError] = useState();
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState();
+  const [data, setData] = useState({});
+  const [winn, setWinn] = useState();
 
   const logo = process.env.REACT_APP_LOGO_URL;
   const links = [
@@ -32,11 +33,15 @@ const DiceGame = () => {
         if (data.length === 0) {
           return alert('Error by rolling dice');
         }
+        setWinn(data.isWinner);
         return setData(data.numbers);
       })
-      .catch((err) => alert(err.message));
+      .catch((err) => alert(err.message))
+      .finally(() => setLoading(false), setWinn(false));
 
-  useEffect(() => getRandomNumbers(), []);
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   return (
     <section>
@@ -46,13 +51,33 @@ const DiceGame = () => {
 
       <div id="dicePlatform" className="wrapper">
         {!!data &&
+          Object.keys(data).length !== 0 &&
           data.map((diceValue, index) => (
             <Dice key={index} randomNumber={diceValue} />
           ))}
       </div>
-      <Button className="button" type="button" /*onClick=???*/>
-        Roll the dice!
-      </Button>
+      <div className="wrapper">
+        {winn && (
+          <Notification background="green">
+            {<h1>Hurray! Today is your lucky day!</h1>}
+          </Notification>
+        )}
+
+        {winn === false && (
+          <Notification background="red">{<h1>Keep trying!</h1>}</Notification>
+        )}
+      </div>
+      <div id="diceRollButton">
+        <Button
+          className="button"
+          type="button"
+          onClick={(e) => {
+            getRandomNumbers();
+          }}
+        >
+          Roll the dice!
+        </Button>
+      </div>
     </section>
   );
 };

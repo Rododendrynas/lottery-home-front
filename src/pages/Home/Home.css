@@ -1,6 +1,10 @@
+:root {
+  --primary-color-gold: goldenrod;
+}
+
 body {
   background: black;
-  color: gold;
+  color: var(--primary-color-gold);
 }
 
 .wrapper {

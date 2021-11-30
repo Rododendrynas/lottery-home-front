@@ -1,7 +1,7 @@
 .dice {
-  min-width: 10rem;
-  min-height: 10rem;
-  border: 1px solid goldenrod;
+  width: 10rem;
+  height: 10rem;
+  border: 1px solid var(--primary-color-gold);
   margin-right: 3rem;
   border-radius: 0.5rem;
   text-align: center;

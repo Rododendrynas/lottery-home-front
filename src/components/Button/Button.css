@@ -1,13 +1,14 @@
 .button {
-  background: rgba(13, 143, 13, 0.308);
+  background: goldenrod;
   border-radius: 0.3rem;
-  padding: 0.5rem;
+  padding: 1rem;
   border: 1px solid rgb(95, 93, 93);
   cursor: pointer;
   font-weight: bold;
   margin-top: 1rem;
+  font-size: large;
 }
 
 .button:hover {
-  padding: 1rem;
+  padding: 1.5rem;
 }
