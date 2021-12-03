@@ -1,12 +1,12 @@
 .button {
-  background: goldenrod;
+  background: var(--primary-color-gold);
   border-radius: 0.3rem;
   padding: 1rem;
-  border: 1px solid rgb(95, 93, 93);
   cursor: pointer;
   font-weight: bold;
   margin-top: 1rem;
   font-size: large;
+  margin-bottom: 4rem;
 }
 
 .button:hover {

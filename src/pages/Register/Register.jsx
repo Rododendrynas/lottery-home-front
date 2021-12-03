@@ -49,6 +49,24 @@ const Register = () => {
           }}
         >
           <div>
+            <label className="label">Nickname</label>
+            <div>
+              <input
+                className="input"
+                type="text"
+                placeholder="nickname"
+                onChange={(e) =>
+                  setUserInputs({
+                    ...userInputs,
+                    email: e.target.value.trim,
+                  })
+                }
+                required
+              />
+            </div>
+          </div>
+
+          <div>
             <label className="label">Email</label>
             <div>
               <input

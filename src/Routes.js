@@ -7,7 +7,7 @@ import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import DiceGame from './pages/DiceGame/DiceGame';
-// import Account from './pages/Account/Account';
+import Account from './pages/Account/Account';
 
 const PageRouter = () => {
   return (
@@ -17,6 +17,7 @@ const PageRouter = () => {
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/" element={<Home />} />
         <Route exact path="/dice" element={<DiceGame />} />
+        <Route exact path="/account" element={<Account />} />
         {/* <Route
           exact
           path="/"

@@ -105,22 +105,20 @@ const Login = () => {
           </div>
         </div>
 
-        <div className="field">
-          <div className="control">
-            <Button className="button" type="submit">
-              Login
-            </Button>
+        <div>
+          <Button className="button" type="submit">
+            Login
+          </Button>
 
-            <Button
-              className="button"
-              type="button"
-              onClick={(e) => {
-                setNotificationDisplay(() => false);
-              }}
-            >
-              Delete notification
-            </Button>
-          </div>
+          <Button
+            className="button"
+            type="button"
+            onClick={(e) => {
+              setNotificationDisplay(() => false);
+            }}
+          >
+            Delete notification
+          </Button>
         </div>
       </form>
     </section>
