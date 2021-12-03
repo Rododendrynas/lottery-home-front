@@ -45,7 +45,16 @@ const DiceGame = () => {
 
   return (
     <section>
-      {error && <Notification background="red">{error}</Notification>}
+      {!!error && (
+        <Notification
+          background="red"
+          onClick={(e) => {
+            setError();
+          }}
+        >
+          {error}
+        </Notification>
+      )}
       {loading && <Loading />}
       <Menu logo={logo} links={links} />
 

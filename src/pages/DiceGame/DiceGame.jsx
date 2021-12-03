@@ -27,26 +27,34 @@ const DiceGame = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.err) {
-          return alert(data.err);
+        if (data.error) {
+          return setError(data.error);
         }
-
         if (data.length === 0) {
-          return alert('Error by rolling dice');
+          return setError('Error by rolling dice');
         }
         setWinn(data.isWinner);
         return setData(data.numbers);
       })
-      .catch((err) => alert(err.message))
+      .catch((err) => setError(err))
       .finally(() => setLoading(false));
 
   useEffect(() => {
-    setLoading(false);
+    setLoading();
   }, []);
 
   return (
     <section>
-      {error && <Notification background="red">{error}</Notification>}
+      {!!error && (
+        <Notification
+          background="red"
+          onClick={(e) => {
+            setError();
+          }}
+        >
+          {error}
+        </Notification>
+      )}
       {loading && <Loading />}
       <Menu logo={logo} links={links} />
 

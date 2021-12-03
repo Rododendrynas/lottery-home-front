@@ -1,15 +1,28 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/auth';
+import jwt_decode from 'jwt-decode';
 
 import { Button, Menu, Notification } from '../../components';
 import { useEffect } from 'react/cjs/react.development';
 
+const getUserIdFromToken = (token) => {
+  try {
+    const jwt = jwt_decode(token);
+
+    return jwt.id;
+  } catch (e) {
+    return null;
+  }
+};
+
 const Account = () => {
   const authContext = useContext(AuthContext);
+
   const [userInputs, setUserInputs] = useState();
   const navigate = useNavigate();
   const [error, setError] = useState();
+  const [message, setMessage] = useState();
 
   const logo = process.env.REACT_APP_LOGO_URL;
   const links = [
@@ -17,51 +30,63 @@ const Account = () => {
     { path: '/register', linkName: 'Register' },
   ];
 
-  /* Replace user nickname with a new one. */
-  const changeUserNickname = () => {
-    console.log(token.id);
-    const userId = token.id;
-    fetch(process.env.REACT_APP_BASE_URL + '/v1/auth/account/' + userId, {
+  const userId = getUserIdFromToken(authContext.token);
+
+  useEffect(() => {
+    if (!userId) {
+      navigate('/login');
+    }
+  }, [userId, navigate]);
+
+  const changeUserNickname = (userId, userInputs) => {
+    fetch(process.env.REACT_APP_BASE_URL + '/v1/content/account/' + userId, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        // authorization: `Bearer ${authContext.token || 'none'}`,
+        // authorization: `Bearer ${authContext.token}`,
       },
       body: JSON.stringify(userInputs),
     })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        if (data.err) {
-          return setError(data.err || 'Unknown error');
-        }
 
-        alert('Successfully updated your nickname');
+        if (data.error) {
+          return setError(data.error || 'Unknown error');
+        }
+        setMessage(
+          `Successfully updated your nickname to ${userInputs.nickname}`,
+        );
       })
-      .catch((err) => alert(err.message));
+      .catch((err) => setError(err));
   };
 
-  const deleteAccount = () => {
-    fetch(process.env.REACT_APP_BASE_URL + '/v1/auth/account', {
+  const deleteAccount = (userId) => {
+    fetch(process.env.REACT_APP_BASE_URL + '/v1/content/account/' + userId, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         // authorization: `Bearer ${authContext.token || 'none'}`,
       },
     })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
-
-        alert('Successfully deleted your account');
-
-        navigate('/register');
-      })
-      .catch((err) => alert(err.message));
+      .then(() => navigate('/register'))
+      .catch((err) => setError(err));
   };
 
   return (
     <section className="section">
+      {/* Error handling */}
+      {!!error && (
+        <Notification
+          background="red"
+          onClick={(e) => {
+            setError();
+          }}
+        >
+          {error}
+        </Notification>
+      )}
+      {message && <Notification>{message}</Notification>}
       <div className="container">
         {error && <Notification background="red">{error}</Notification>}
         <Menu logo={logo} links={links} />
@@ -71,12 +96,14 @@ const Account = () => {
           className="form"
           onSubmit={(e) => {
             e.preventDefault();
-            changeUserNickname();
-            e.target.reset();
+            if (!!userId) {
+              changeUserNickname(userId, userInputs);
+              e.target.reset();
+            }
           }}
         >
           <div>
-            <label className="label">Nickname</label>
+            <label className="label">New Nickname</label>
             <div>
               <input
                 className="input"
@@ -85,7 +112,7 @@ const Account = () => {
                 onChange={(e) =>
                   setUserInputs({
                     ...userInputs,
-                    email: e.target.value.trim,
+                    nickname: e.target.value.trim(),
                   })
                 }
                 required
@@ -103,9 +130,7 @@ const Account = () => {
           <Button
             className="button deleteButton"
             type="button"
-            onClick={(e) => {
-              deleteAccount();
-            }}
+            onClick={(e) => !!userId && deleteAccount(userId)}
           >
             Delete your account
           </Button>

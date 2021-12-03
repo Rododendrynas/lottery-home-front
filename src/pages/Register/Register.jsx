@@ -5,8 +5,8 @@ import { Button, Menu, Notification } from '../../components';
 
 const Register = () => {
   const [userInputs, setUserInputs] = useState();
-  const navigate = useNavigate();
   const [error, setError] = useState();
+  const navigate = useNavigate();
 
   const logo = process.env.REACT_APP_LOGO_URL;
   const links = [
@@ -17,7 +17,16 @@ const Register = () => {
   return (
     <section className="section">
       <div className="container">
-        {error && <Notification background="red">{error}</Notification>}
+        {!!error && (
+          <Notification
+            background="red"
+            onClick={(e) => {
+              setError();
+            }}
+          >
+            {error}
+          </Notification>
+        )}
         <Menu logo={logo} links={links} />
 
         {/* Create a form to enter registration data. Save input data in database. */}
@@ -35,16 +44,12 @@ const Register = () => {
             })
               .then((res) => res.json())
               .then((data) => {
-                console.log(data);
                 if (data.err) {
                   return setError(data.err || 'Unknown error');
                 }
-
-                alert('Successfully registered');
-
                 navigate('/login');
               })
-              .catch((err) => alert(err.message))
+              .catch((err) => setError(err))
               .finally(() => e.target.reset());
           }}
         >
@@ -58,7 +63,7 @@ const Register = () => {
                 onChange={(e) =>
                   setUserInputs({
                     ...userInputs,
-                    email: e.target.value.trim,
+                    nickname: e.target.value.trim(),
                   })
                 }
                 required
