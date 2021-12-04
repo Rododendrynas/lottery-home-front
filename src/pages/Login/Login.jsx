@@ -28,7 +28,7 @@ const Login = () => {
       .then((res) => res.json())
       .then((data) => {
         if (!!data.error || !!data.err) {
-          setError(data.error || data.err || 'Unknown error');
+          setError(data.error || data.err || 'Unknown error during login');
           return;
         }
         // Create and set jwt token
@@ -36,9 +36,7 @@ const Login = () => {
 
         navigate('/account');
       })
-      .catch((err) => {
-        setError(err.message);
-      })
+      .catch((err) => setError(err))
       .finally(() => e.target.reset());
   };
 
@@ -61,6 +59,7 @@ const Login = () => {
       <form
         className="form"
         onSubmit={(e) => {
+          setError();
           e.preventDefault();
           login(e);
         }}

@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { AuthContext } from '../../contexts/auth';
 import { Menu, Notification, Loading, Dice, Button } from '../../components';
+import { useNavigate } from 'react-router-dom';
 
 import './DiceGame.css';
 
@@ -10,12 +11,30 @@ const DiceGame = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
   const [isWinn, setWinn] = useState();
+  const navigate = useNavigate();
 
   const logo = process.env.REACT_APP_LOGO_URL;
-  const links = [
-    { path: '/', linkName: 'Home' },
-    { path: '/login', linkName: 'Login' },
-  ];
+  const links = [{ path: '/account', linkName: 'Account' }];
+
+  // function handleResponse(response) {
+  //   return response.text().then((text) => {
+  //     const data = text && JSON.parse(text);
+
+  //     if (!response.ok) {
+  //       if ([401, 403].includes(response.status) && authContext?.token) {
+  //         // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
+  //         authContext.token = '';
+  //         navigate('/login');
+  //       }
+
+  //       const error = (data && data.message) || response.statusText;
+  //       setError(error);
+  //       return Promise.reject(error);
+  //     }
+
+  //     return data;
+  //   });
+  // }
 
   const getRandomNumbers = () =>
     fetch(process.env.REACT_APP_BASE_URL + '/v1/content/dice/', {
@@ -26,6 +45,7 @@ const DiceGame = () => {
       },
     })
       .then((res) => res.json())
+      // .then((res) => handleResponse(res))
       .then((data) => {
         if (data.error) {
           return setError(data.error);
@@ -36,7 +56,7 @@ const DiceGame = () => {
         setWinn(data.isWinner);
         return setData(data.numbers);
       })
-      .catch((err) => setError(err))
+      .catch((error) => setError(error))
       .finally(() => setLoading(false));
 
   useEffect(() => {

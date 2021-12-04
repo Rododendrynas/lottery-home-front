@@ -1,9 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/auth';
 import jwt_decode from 'jwt-decode';
 
-import { Button, Menu, Notification } from '../../components';
+import { Button, Menu, Notification, Loading } from '../../components';
+import { getUserNickname } from '../../shared';
 import { useEffect } from 'react/cjs/react.development';
 
 const getUserIdFromToken = (token) => {
@@ -21,29 +22,48 @@ const Account = () => {
 
   const [userInputs, setUserInputs] = useState();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
   const [message, setMessage] = useState();
+  const [nickname, setNickname] = useState();
 
   const logo = process.env.REACT_APP_LOGO_URL;
-  const links = [
-    { path: '/login', linkName: 'Login' },
-    { path: '/register', linkName: 'Register' },
-  ];
+  const links = [{ path: '/dice', linkName: 'Home' }];
 
+  // Get user id from token
   const userId = getUserIdFromToken(authContext.token);
 
+  // Calback function for getting user nickname
+  const getNickname = useCallback(() => {
+    const gun = async () => {
+      const data = await getUserNickname(userId, authContext.token);
+
+      if (data.nickname) {
+        setNickname(data.nickname);
+        setLoading(false);
+      } else {
+        setError(data.error || 'Nickname not set');
+      }
+    };
+    gun();
+  }, [userId, setNickname, setLoading, authContext.token]);
+
+  //Navigate to login page if token is not set
   useEffect(() => {
     if (!userId) {
       navigate('/login');
     }
-  }, [userId, navigate]);
+    //Get user nickname
+    getNickname();
+  }, [userId, navigate, getNickname]);
 
-  const changeUserNickname = (userId, userInputs) => {
+  //Function for user to change his nickname. Get and set a new nickname from database.
+  const changeNickname = (userId, userInputs) => {
     fetch(process.env.REACT_APP_BASE_URL + '/v1/content/account/' + userId, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        // authorization: `Bearer ${authContext.token}`,
+        authorization: `Bearer ${authContext.token}`,
       },
       body: JSON.stringify(userInputs),
     })
@@ -52,21 +72,24 @@ const Account = () => {
         console.log(data);
 
         if (data.error) {
-          return setError(data.error || 'Unknown error');
+          console.log(data.error);
+          return setError(data.error || 'Unknown error by changing nickname');
         }
         setMessage(
           `Successfully updated your nickname to ${userInputs.nickname}`,
         );
       })
-      .catch((err) => setError(err));
+      .catch((error) => setError(error))
+      .finally(getNickname());
   };
 
+  //Function for user to delete his account from database
   const deleteAccount = (userId) => {
     fetch(process.env.REACT_APP_BASE_URL + '/v1/content/account/' + userId, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        // authorization: `Bearer ${authContext.token || 'none'}`,
+        authorization: `Bearer ${authContext.token || 'none'}`,
       },
     })
       .then(() => navigate('/register'))
@@ -86,18 +109,30 @@ const Account = () => {
           {error}
         </Notification>
       )}
-      {message && <Notification>{message}</Notification>}
+      {message && (
+        <Notification
+          onClick={(e) => {
+            setMessage();
+          }}
+        >
+          {message}
+        </Notification>
+      )}
       <div className="container">
-        {error && <Notification background="red">{error}</Notification>}
         <Menu logo={logo} links={links} />
+        {loading && <Loading />}
+        {nickname && <h1 className="nickname">Hi, {nickname}! Let's play!</h1>}
 
         {/* Replace user nickname with a new one. */}
         <form
           className="form"
           onSubmit={(e) => {
             e.preventDefault();
+            setMessage();
+            setError();
+
             if (!!userId) {
-              changeUserNickname(userId, userInputs);
+              changeNickname(userId, userInputs);
               e.target.reset();
             }
           }}
