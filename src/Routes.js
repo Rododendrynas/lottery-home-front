@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// import PrivateRoute from './components/PrivateRoute';
+import PrivateRoute from './components/PrivateRoute';
 
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
@@ -15,18 +15,33 @@ const PageRouter = () => {
       <Routes>
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/login" element={<Login />} />
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="/dice" element={<DiceGame />} />
-        <Route exact path="/account" element={<Account />} />
-        {/* <Route
+        <Route
           exact
           path="/"
+          element={
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/dice"
+          element={
+            <PrivateRoute>
+              <DiceGame />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/account"
           element={
             <PrivateRoute>
               <Account />
             </PrivateRoute>
           }
-        /> */}
+        />
       </Routes>
     </Router>
   );
