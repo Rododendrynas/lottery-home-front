@@ -2,7 +2,7 @@
 
 ![Version](https://img.shields.io/badge/version-0.1.0-blue.svg?cacheSeconds=2592000)
 
-> The main axis of this project - lottery game(s): Dice game, Ping Pong game. Other functionalities around them: registration/login with authorization and a simple account management.
+> The main axis of this project - lottery games: Dice game, Ping Pong game. Other functionalities around them: registration/login with authorization and a simple account management.
 
 ## Install
 
