@@ -1,14 +1,10 @@
-import React from "react";
+import React from 'react';
 
-import "./Button.css";
+import './Button.css';
 
-const Button = ({ type, color, onClick, children }) => {
+const Button = ({ type, onClick, children }) => {
   return (
-    <button
-      className={`button is-${color}`}
-      type={type || "button"}
-      onClick={onClick}
-    >
+    <button className={'button'} type={type || 'button'} onClick={onClick}>
       {children}
     </button>
   );

@@ -20,4 +20,5 @@ const getUserNickname = async (userId, token) => {
     return { error: e };
   }
 };
+
 export default getUserNickname;

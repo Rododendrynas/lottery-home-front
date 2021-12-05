@@ -10,7 +10,6 @@ import { useEffect } from 'react/cjs/react.development';
 const getUserIdFromToken = (token) => {
   try {
     const jwt = jwt_decode(token);
-
     return jwt.id;
   } catch (e) {
     return null;
@@ -29,6 +28,7 @@ const Account = () => {
 
   const logo = process.env.REACT_APP_LOGO_URL;
   const links = [{ path: '/dice', linkName: 'Home' }];
+  const icons = 'fas fa-sign-out-alt';
 
   // Get user id from token
   const userId = getUserIdFromToken(authContext.token);
@@ -119,9 +119,11 @@ const Account = () => {
         </Notification>
       )}
       <div className="container">
-        <Menu logo={logo} links={links} />
+        <Menu logo={logo} links={links} icons={icons} />
         {loading && <Loading />}
-        {nickname && <h1 className="nickname">Hi, {nickname}! Let's play!</h1>}
+        {!!nickname && (
+          <h1 className="nickname">Hi, {nickname}! Let's play!</h1>
+        )}
 
         {/* Replace user nickname with a new one. */}
         <form
@@ -163,7 +165,7 @@ const Account = () => {
 
         <div className="wrapper">
           <Button
-            className="button deleteButton"
+            className="button"
             type="button"
             onClick={(e) => !!userId && deleteAccount(userId)}
           >

@@ -12,10 +12,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const logo = process.env.REACT_APP_LOGO_URL;
-  const links = [
-    { path: '/login', linkName: 'Login' },
-    { path: '/register', linkName: 'Register' },
-  ];
+  const links = [{ path: '/register', linkName: 'Register' }];
 
   const login = (e) => {
     fetch(process.env.REACT_APP_BASE_URL + '/v1/auth/login', {

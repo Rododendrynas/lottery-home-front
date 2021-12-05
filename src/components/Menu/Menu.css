@@ -1,9 +1,8 @@
 .menu {
   display: flex;
-  box-sizing: border-box;
   align-items: center;
-  justify-content: space-between;
   margin-top: 2rem;
+  justify-content: space-between;
 }
 
 img {
@@ -11,7 +10,6 @@ img {
 }
 
 a {
-  margin-left: 2rem;
   color: var(--primary-color-gold);
   text-decoration: none;
   font-size: 24px;
@@ -22,4 +20,10 @@ a:hover {
   text-decoration: underline;
   color: red;
   cursor: pointer;
+}
+
+i {
+  font-size: 24px;
+  cursor: pointer;
+  margin-left: 3rem;
 }

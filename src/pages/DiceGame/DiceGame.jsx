@@ -1,9 +1,21 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext, useState, useCallback } from 'react';
 import { AuthContext } from '../../contexts/auth';
 import { Menu, Notification, Loading, Dice, Button } from '../../components';
 import { useNavigate } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
+import { getUserNickname } from '../../shared';
 
 import './DiceGame.css';
+
+const getUserIdFromToken = (token) => {
+  try {
+    const jwt = jwt_decode(token);
+
+    return jwt.id;
+  } catch (e) {
+    return null;
+  }
+};
 
 const DiceGame = () => {
   const authContext = useContext(AuthContext);
@@ -11,10 +23,39 @@ const DiceGame = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
   const [isWinn, setWinn] = useState();
+  const [nickname, setNickname] = useState();
   const navigate = useNavigate();
 
   const logo = process.env.REACT_APP_LOGO_URL;
   const links = [{ path: '/account', linkName: 'Account' }];
+  const icons = 'fas fa-sign-out-alt';
+
+  // Get user id from token
+  const userId = getUserIdFromToken(authContext.token);
+
+  // Calback function for getting user nickname
+  const getNickname = useCallback(() => {
+    const gun = async () => {
+      const data = await getUserNickname(userId, authContext.token);
+
+      if (data.nickname) {
+        setNickname(data.nickname);
+        setLoading(false);
+      } else {
+        setError(data.error || 'Nickname not set');
+      }
+    };
+    gun();
+  }, [userId, setNickname, setLoading, authContext.token]);
+
+  //Navigate to login page if token is not set
+  useEffect(() => {
+    if (!userId) {
+      navigate('/login');
+    }
+    //Get user nickname
+    getNickname();
+  }, [userId, navigate, getNickname]);
 
   // function handleResponse(response) {
   //   return response.text().then((text) => {
@@ -76,7 +117,9 @@ const DiceGame = () => {
         </Notification>
       )}
       {loading && <Loading />}
-      <Menu logo={logo} links={links} />
+      <Menu logo={logo} links={links} icons={icons} />
+      {loading && <Loading />}
+      {!!nickname && <h1 className="nickname">Hi, {nickname}! Let's play!</h1>}
 
       <div id="dicePlatform" className="wrapper">
         {!!data &&
