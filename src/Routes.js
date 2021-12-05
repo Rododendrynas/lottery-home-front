@@ -8,6 +8,7 @@ import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import DiceGame from './pages/DiceGame/DiceGame';
 import Account from './pages/Account/Account';
+import PingPongGame from './pages/PingPongGame/PingPongGame';
 
 const PageRouter = () => {
   return (
@@ -30,6 +31,15 @@ const PageRouter = () => {
           element={
             <PrivateRoute>
               <DiceGame />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/pingpong"
+          element={
+            <PrivateRoute>
+              <PingPongGame />
             </PrivateRoute>
           }
         />

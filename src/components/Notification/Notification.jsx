@@ -4,7 +4,7 @@ import './Notification.css';
 
 const Notification = ({ background, onClick, children }) => {
   const style = {
-    background: background || 'yellow',
+    background: background || 'var(--primary-color-gold)',
   };
 
   return (

@@ -57,28 +57,8 @@ const DiceGame = () => {
     getNickname();
   }, [userId, navigate, getNickname]);
 
-  // function handleResponse(response) {
-  //   return response.text().then((text) => {
-  //     const data = text && JSON.parse(text);
-
-  //     if (!response.ok) {
-  //       if ([401, 403].includes(response.status) && authContext?.token) {
-  //         // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-  //         authContext.token = '';
-  //         navigate('/login');
-  //       }
-
-  //       const error = (data && data.message) || response.statusText;
-  //       setError(error);
-  //       return Promise.reject(error);
-  //     }
-
-  //     return data;
-  //   });
-  // }
-
-  const getRandomNumbers = () =>
-    fetch(process.env.REACT_APP_BASE_URL + '/v1/content/dice/', {
+  const getRandomNumbers = (num) =>
+    fetch(process.env.REACT_APP_BASE_URL + '/v1/content/dice/' + num, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -86,10 +66,11 @@ const DiceGame = () => {
       },
     })
       .then((res) => res.json())
-      // .then((res) => handleResponse(res))
       .then((data) => {
-        if (data.error) {
-          return setError(data.error);
+        if (data.error || data.err) {
+          return setError(
+            data.error || data.err || 'Error by getting dice numbers',
+          );
         }
         if (data.length === 0) {
           return setError('Error by rolling dice');
@@ -141,12 +122,13 @@ const DiceGame = () => {
           </Notification>
         )}
       </div>
-      <div id="diceRollButton">
+      <div className="getLuckyNumbersButton">
         <Button
           className="button"
           type="button"
           onClick={(e) => {
-            getRandomNumbers();
+            setError();
+            getRandomNumbers(3);
           }}
         >
           Roll the dice!

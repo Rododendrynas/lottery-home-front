@@ -1,6 +1,5 @@
 .dice {
-  width: 10rem;
-  height: 10rem;
+  padding: 3.5rem;
   border: 1px solid var(--primary-color-gold);
   margin-right: 3rem;
   border-radius: 0.5rem;
@@ -13,4 +12,8 @@
 
 .dice:nth-child(3n) {
   margin-right: 0;
+}
+
+.luckyNumber {
+  margin: 0;
 }

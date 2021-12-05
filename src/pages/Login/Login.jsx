@@ -24,16 +24,18 @@ const Login = () => {
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         if (!!data.error || !!data.err) {
           setError(data.error || data.err || 'Unknown error during login');
           return;
         }
+
         // Create and set jwt token
         authContext.setToken(data.token);
 
         navigate('/account');
       })
-      .catch((err) => setError(err))
+      .catch(() => setError('Error during reaching server'))
       .finally(() => e.target.reset());
   };
 

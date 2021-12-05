@@ -1,46 +1,88 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext, useState, useCallback } from 'react';
 import { AuthContext } from '../../contexts/auth';
 import { Menu, Notification, Loading, Circle, Button } from '../../components';
+import { useNavigate } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
+import { getUserNickname } from '../../shared';
 
-import './DiceGame.css';
+import './PingPongGame.css';
 
-const DiceGame = () => {
+const getUserIdFromToken = (token) => {
+  try {
+    const jwt = jwt_decode(token);
+
+    return jwt.id;
+  } catch (e) {
+    return null;
+  }
+};
+
+const PingPongGame = () => {
   const authContext = useContext(AuthContext);
   const [error, setError] = useState();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
   const [isWinn, setWinn] = useState();
+  const [nickname, setNickname] = useState();
+  const navigate = useNavigate();
 
   const logo = process.env.REACT_APP_LOGO_URL;
-  const links = [
-    { path: '/', linkName: 'Home' },
-    { path: '/login', linkName: 'Login' },
-  ];
+  const links = [{ path: '/account', linkName: 'Account' }];
+  const icons = 'fas fa-sign-out-alt';
 
-  const getRandomNumbers = () =>
-    fetch(process.env.REACT_APP_BASE_URL + '/v1/content/ping-pong/', {
+  // Get user id from token
+  const userId = getUserIdFromToken(authContext.token);
+
+  // Calback function for getting user nickname
+  const getNickname = useCallback(() => {
+    const gun = async () => {
+      const data = await getUserNickname(userId, authContext.token);
+
+      if (data.nickname) {
+        setNickname(data.nickname);
+        setLoading(false);
+      } else {
+        setError(data.error || 'Nickname not set');
+      }
+    };
+    gun();
+  }, [userId, setNickname, setLoading, authContext.token]);
+
+  //Navigate to login page if token is not set
+  useEffect(() => {
+    if (!userId) {
+      navigate('/login');
+    }
+    //Get user nickname
+    getNickname();
+  }, [userId, navigate, getNickname]);
+
+  const getRandomNumbers = (num) =>
+    fetch(process.env.REACT_APP_BASE_URL + '/v1/content/dice/' + num, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        authorization: `Bearer ${authContext.token || 'none'}`,
       },
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.err) {
-          return alert(data.err);
+        if (data.error || data.err) {
+          return setError(
+            data.error || data.err || 'Error by getting Ping Pong numbers',
+          );
         }
-
         if (data.length === 0) {
-          return alert('Error by rolling ping pong');
+          return setError('Error by getting data');
         }
         setWinn(data.isWinner);
         return setData(data.numbers);
       })
-      .catch((err) => alert(err.message))
-      .finally(() => setLoading(false), setWinn(false));
+      .catch((error) => setError(error))
+      .finally(() => setLoading(false));
 
   useEffect(() => {
-    setLoading(false);
+    setLoading();
   }, []);
 
   return (
@@ -56,13 +98,15 @@ const DiceGame = () => {
         </Notification>
       )}
       {loading && <Loading />}
-      <Menu logo={logo} links={links} />
+      <Menu logo={logo} links={links} icons={icons} />
+      {loading && <Loading />}
+      {!!nickname && <h1 className="nickname">Hi, {nickname}! Let's play!</h1>}
 
-      <div id="dicePlatform" className="wrapper">
+      <div id="pingpongPlatform" className="wrapper">
         {!!data &&
           Object.keys(data).length !== 0 &&
-          data.map((circleValue, index) => (
-            <Circle key={index} randomNumber={circleValue} />
+          data.map((diceValue, index) => (
+            <Circle key={index} randomNumber={diceValue} />
           ))}
       </div>
       <div className="wrapper">
@@ -78,19 +122,20 @@ const DiceGame = () => {
           </Notification>
         )}
       </div>
-      <div id="diceRollButton">
+      <div className="getLuckyNumbersButton">
         <Button
           className="button"
           type="button"
           onClick={(e) => {
-            getRandomNumbers();
+            setError();
+            getRandomNumbers(5);
           }}
         >
-          Roll the dice!
+          Get your lucky numbers!
         </Button>
       </div>
     </section>
   );
 };
 
-export default DiceGame;
+export default PingPongGame;

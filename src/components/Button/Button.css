@@ -11,3 +11,7 @@
 .button:hover {
   padding: 1.5rem;
 }
+
+.getLuckyNumbersButton {
+  text-align: center;
+}

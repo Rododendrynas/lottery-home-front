@@ -15,7 +15,7 @@ const getUserNickname = async (userId, token) => {
 
     return json;
   } catch (e) {
-    console.log('Here (2): ' + JSON.stringify(e));
+    console.log('Error by getting user nickname ' + JSON.stringify(e));
 
     return { error: e };
   }

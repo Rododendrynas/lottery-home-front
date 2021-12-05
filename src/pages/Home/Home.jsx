@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../contexts/auth';
 import { Menu, Notification, Loading } from '../../components';
 

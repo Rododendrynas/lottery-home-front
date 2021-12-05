@@ -23,7 +23,7 @@ const Menu = ({ logo, links, icons }) => {
             ))}
           {!!icons && (
             <i
-              class={icons}
+              className={icons}
               onClick={(e) => {
                 authContext.setToken('');
                 navigate('/login');

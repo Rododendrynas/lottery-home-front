@@ -27,7 +27,10 @@ const Account = () => {
   const [nickname, setNickname] = useState();
 
   const logo = process.env.REACT_APP_LOGO_URL;
-  const links = [{ path: '/dice', linkName: 'Home' }];
+  const links = [
+    { path: '/dice', linkName: 'Home' },
+    { path: '/pingpong', linkName: 'PingPong' },
+  ];
   const icons = 'fas fa-sign-out-alt';
 
   // Get user id from token
@@ -42,7 +45,7 @@ const Account = () => {
         setNickname(data.nickname);
         setLoading(false);
       } else {
-        setError(data.error || 'Nickname not set');
+        setError(data.error || data.err || 'Nickname not set');
       }
     };
     gun();
@@ -71,9 +74,10 @@ const Account = () => {
       .then((data) => {
         console.log(data);
 
-        if (data.error) {
-          console.log(data.error);
-          return setError(data.error || 'Unknown error by changing nickname');
+        if (data.error || data.err) {
+          return setError(
+            data.error || data.err || 'Error by changing nickname',
+          );
         }
         setMessage(
           `Successfully updated your nickname to ${userInputs.nickname}`,
@@ -92,8 +96,16 @@ const Account = () => {
         authorization: `Bearer ${authContext.token || 'none'}`,
       },
     })
-      .then(() => navigate('/register'))
-      .catch((err) => setError(err));
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.error || res.err) {
+          return setError('Error by deleting user');
+        }
+        navigate('/register');
+      })
+      .catch((err) => {
+        return setError(err);
+      });
   };
 
   return (

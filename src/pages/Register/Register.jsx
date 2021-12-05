@@ -21,8 +21,10 @@ const Register = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.err) {
-          return setError(data.err || 'Unknown error during registration');
+        if (data.error || data.err) {
+          return setError(
+            data.error || data.err || 'Unknown error during registration',
+          );
         }
         navigate('/login');
       })
