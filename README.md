@@ -6,10 +6,10 @@
 
 ## Install
 
-Run ```sh
+```sh
 npm install
 
-````
+```
 
 ## Usage
 
@@ -21,9 +21,10 @@ Download the code:
 
 Create your own .env file using .env.example file structure
 
-Run ```sh
+```sh
 npm run start
-````
+
+```
 
 ## Author
 
