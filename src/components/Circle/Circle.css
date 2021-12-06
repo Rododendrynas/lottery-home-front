@@ -1,5 +1,6 @@
 .circle {
-  padding: 1.5rem 2.5rem;
+  width: 6rem;
+  height: 4rem;
   border: 1px solid var(--primary-color-gold);
   margin-right: 3rem;
   border-radius: 3rem;

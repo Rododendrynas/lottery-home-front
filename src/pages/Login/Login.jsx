@@ -33,7 +33,7 @@ const Login = () => {
         // Create and set jwt token
         authContext.setToken(data.token);
 
-        navigate('/account');
+        navigate('/');
       })
       .catch(() => setError('Error during reaching server'))
       .finally(() => e.target.reset());

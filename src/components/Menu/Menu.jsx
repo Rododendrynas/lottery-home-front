@@ -4,14 +4,20 @@ import { AuthContext } from '../../contexts/auth';
 
 import './Menu.css';
 
-const Menu = ({ logo, links, icons }) => {
+const Menu = ({ logo, links, account, signout }) => {
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
   return (
     <section className="wrapper">
       <div className="menu">
         <div className="logo">
-          <img src={logo} alt="logo" />
+          <img
+            src={logo}
+            alt="logo"
+            onClick={(e) => {
+              navigate('/');
+            }}
+          />
         </div>
 
         <nav className="links">
@@ -21,9 +27,17 @@ const Menu = ({ logo, links, icons }) => {
                 {prop.linkName}
               </Link>
             ))}
-          {!!icons && (
+          {!!account && (
             <i
-              className={icons}
+              className={account}
+              onClick={(e) => {
+                navigate('/account');
+              }}
+            ></i>
+          )}
+          {!!signout && (
+            <i
+              className={signout}
               onClick={(e) => {
                 authContext.setToken('');
                 navigate('/login');

@@ -10,6 +10,7 @@ import { useEffect } from 'react/cjs/react.development';
 const getUserIdFromToken = (token) => {
   try {
     const jwt = jwt_decode(token);
+    console.log(token);
     return jwt.id;
   } catch (e) {
     return null;
@@ -27,11 +28,7 @@ const Account = () => {
   const [nickname, setNickname] = useState();
 
   const logo = process.env.REACT_APP_LOGO_URL;
-  const links = [
-    { path: '/dice', linkName: 'Home' },
-    { path: '/pingpong', linkName: 'PingPong' },
-  ];
-  const icons = 'fas fa-sign-out-alt';
+  const signout = 'fas fa-sign-out-alt';
 
   // Get user id from token
   const userId = getUserIdFromToken(authContext.token);
@@ -131,7 +128,7 @@ const Account = () => {
         </Notification>
       )}
       <div className="container">
-        <Menu logo={logo} links={links} icons={icons} />
+        <Menu logo={logo} links={links} signout={signout} />
         {loading && <Loading />}
         {!!nickname && (
           <h1 className="nickname">Hi, {nickname}! Let's play!</h1>

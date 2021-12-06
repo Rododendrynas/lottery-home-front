@@ -27,8 +27,8 @@ const DiceGame = () => {
   const navigate = useNavigate();
 
   const logo = process.env.REACT_APP_LOGO_URL;
-  const links = [{ path: '/account', linkName: 'Account' }];
-  const icons = 'fas fa-sign-out-alt';
+  const account = 'fas fa-user';
+  const signout = 'fas fa-sign-out-alt';
 
   // Get user id from token
   const userId = getUserIdFromToken(authContext.token);
@@ -57,8 +57,8 @@ const DiceGame = () => {
     getNickname();
   }, [userId, navigate, getNickname]);
 
-  const getRandomNumbers = (num) =>
-    fetch(process.env.REACT_APP_BASE_URL + '/v1/content/dice/' + num, {
+  const getRandomNumbers = () =>
+    fetch(process.env.REACT_APP_BASE_URL + '/v1/content/dice/', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ const DiceGame = () => {
         </Notification>
       )}
       {loading && <Loading />}
-      <Menu logo={logo} links={links} icons={icons} />
+      <Menu logo={logo} account={account} signout={signout} />
       {loading && <Loading />}
       {!!nickname && <h1 className="nickname">Hi, {nickname}! Let's play!</h1>}
 
@@ -128,7 +128,7 @@ const DiceGame = () => {
           type="button"
           onClick={(e) => {
             setError();
-            getRandomNumbers(3);
+            getRandomNumbers(3, 6);
           }}
         >
           Roll the dice!

@@ -19,6 +19,7 @@ const getUserIdFromToken = (token) => {
 
 const PingPongGame = () => {
   const authContext = useContext(AuthContext);
+  const [userInputs, setUserInputs] = useState();
   const [error, setError] = useState();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
@@ -27,8 +28,8 @@ const PingPongGame = () => {
   const navigate = useNavigate();
 
   const logo = process.env.REACT_APP_LOGO_URL;
-  const links = [{ path: '/account', linkName: 'Account' }];
-  const icons = 'fas fa-sign-out-alt';
+  const account = 'fas fa-user';
+  const signout = 'fas fa-sign-out-alt';
 
   // Get user id from token
   const userId = getUserIdFromToken(authContext.token);
@@ -57,14 +58,23 @@ const PingPongGame = () => {
     getNickname();
   }, [userId, navigate, getNickname]);
 
-  const getRandomNumbers = (num) =>
-    fetch(process.env.REACT_APP_BASE_URL + '/v1/content/dice/' + num, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: `Bearer ${authContext.token || 'none'}`,
+  const getRandomNumbers = (num, pool) =>
+    fetch(
+      process.env.REACT_APP_BASE_URL +
+        '/v1/content/pingpong/' +
+        num +
+        '/' +
+        pool +
+        '/',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${authContext.token || 'none'}`,
+        },
+        body: JSON.stringify(userInputs),
       },
-    })
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data.error || data.err) {
@@ -76,12 +86,13 @@ const PingPongGame = () => {
           return setError('Error by getting data');
         }
         setWinn(data.isWinner);
-        return setData(data.numbers);
+        return setData(data.randomNumbers);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
 
   useEffect(() => {
+    setUserInputs();
     setLoading();
   }, []);
 
@@ -98,15 +109,100 @@ const PingPongGame = () => {
         </Notification>
       )}
       {loading && <Loading />}
-      <Menu logo={logo} links={links} icons={icons} />
+      <Menu logo={logo} account={account} signout={signout} />
       {loading && <Loading />}
-      {!!nickname && <h1 className="nickname">Hi, {nickname}! Let's play!</h1>}
+      {!!nickname && (
+        <h1 className="nickname">Hi, {nickname}! Insert your own numbers!</h1>
+      )}
 
+      <form
+        className="form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          setError();
+        }}
+      >
+        <div className="inputs">
+          <input
+            className="input"
+            type="text"
+            onChange={(e) =>
+              setUserInputs({
+                ...userInputs,
+                num1: e.target.value.trim(),
+              })
+            }
+            required
+          />
+
+          <input
+            className="input"
+            type="text"
+            onChange={(e) =>
+              setUserInputs({
+                ...userInputs,
+                num2: e.target.value.trim(),
+              })
+            }
+            required
+          />
+
+          <input
+            className="input"
+            type="text"
+            onChange={(e) =>
+              setUserInputs({
+                ...userInputs,
+                num3: e.target.value.trim(),
+              })
+            }
+            required
+          />
+
+          <input
+            className="input"
+            type="text"
+            onChange={(e) =>
+              setUserInputs({
+                ...userInputs,
+                num4: e.target.value.trim(),
+              })
+            }
+            required
+          />
+
+          <input
+            className="input"
+            type="text"
+            onChange={(e) =>
+              setUserInputs({
+                ...userInputs,
+                num5: e.target.value.trim(),
+              })
+            }
+            required
+          />
+        </div>
+        <div className="getLuckyNumbersButton">
+          <Button
+            className="button"
+            type="submit"
+            onClick={(e) => {
+              setError();
+              !!userInputs && getRandomNumbers(5, 45);
+            }}
+          >
+            Try your luck!
+          </Button>
+        </div>
+      </form>
+
+      <h1 className="wrapper">Your random lucky numbers are:</h1>
       <div id="pingpongPlatform" className="wrapper">
         {!!data &&
           Object.keys(data).length !== 0 &&
-          data.map((diceValue, index) => (
-            <Circle key={index} randomNumber={diceValue} />
+          data.map((value, index) => (
+            <Circle key={index} randomNumber={value} />
           ))}
       </div>
       <div className="wrapper">
@@ -121,18 +217,6 @@ const PingPongGame = () => {
             {<h1>Keep trying!</h1>}
           </Notification>
         )}
-      </div>
-      <div className="getLuckyNumbersButton">
-        <Button
-          className="button"
-          type="button"
-          onClick={(e) => {
-            setError();
-            getRandomNumbers(5);
-          }}
-        >
-          Get your lucky numbers!
-        </Button>
       </div>
     </section>
   );

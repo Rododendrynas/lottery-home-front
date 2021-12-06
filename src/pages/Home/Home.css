@@ -9,6 +9,12 @@ body {
   color: var(--primary-color-gold);
 }
 
+.games div {
+  display: inline-block;
+  margin-top: 3rem;
+  margin-right: 3rem;
+}
+
 .wrapper {
   max-width: 50%;
   margin: 0 auto;
