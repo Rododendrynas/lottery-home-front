@@ -33,91 +33,90 @@ const Register = () => {
   };
 
   return (
-    <section className="section">
-      <div className="container">
-        {!!error && (
-          <Notification
-            background="red"
-            onClick={(e) => {
-              setError();
-            }}
-          >
-            {error}
-          </Notification>
-        )}
-        <Menu logo={logo} links={links} />
-
-        {/* Create a form to enter registration data. Save input data in database. */}
-        <form
-          className="form"
-          onSubmit={(e) => {
-            e.preventDefault();
-            register(e);
+    <section>
+      {!!error && (
+        <Notification
+          background="red"
+          onClick={(e) => {
+            setError();
           }}
         >
-          <div>
-            <label className="label">Nickname</label>
-            <div>
-              <input
-                className="input"
-                type="text"
-                placeholder="nickname"
-                onChange={(e) =>
-                  setUserInputs({
-                    ...userInputs,
-                    nickname: e.target.value.trim(),
-                  })
-                }
-                required
-              />
-            </div>
-          </div>
+          {error}
+        </Notification>
+      )}
+      <Menu logo={logo} links={links} />
 
-          <div>
-            <label className="label">Email</label>
-            <div>
-              <input
-                className="input"
-                type="email"
-                placeholder="your_email@email.lt"
-                onChange={(e) =>
-                  setUserInputs({
-                    ...userInputs,
-                    email: e.target.value.trim().toLowerCase(),
-                  })
-                }
-                required
-              />
-            </div>
-          </div>
+      {/* Create a form to enter registration data. Save input data in database. */}
 
+      <form
+        className="form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          register(e);
+        }}
+      >
+        <div>
+          <label className="label">Nickname</label>
           <div>
-            <label className="label">Password</label>
-            <div>
-              <input
-                className="input"
-                type="password"
-                placeholder="password"
-                onChange={(e) =>
-                  setUserInputs({
-                    ...userInputs,
-                    password: e.target.value,
-                  })
-                }
-                required
-              />
-            </div>
+            <input
+              className="input"
+              type="text"
+              placeholder="nickname"
+              onChange={(e) =>
+                setUserInputs({
+                  ...userInputs,
+                  nickname: e.target.value.trim(),
+                })
+              }
+              required
+            />
           </div>
+        </div>
 
-          <div className="field">
-            <div className="control">
-              <Button className="button" type="submit">
-                Register
-              </Button>
-            </div>
+        <div>
+          <label className="label">Email</label>
+          <div>
+            <input
+              className="input"
+              type="email"
+              placeholder="your_email@email.lt"
+              onChange={(e) =>
+                setUserInputs({
+                  ...userInputs,
+                  email: e.target.value.trim().toLowerCase(),
+                })
+              }
+              required
+            />
           </div>
-        </form>
-      </div>
+        </div>
+
+        <div>
+          <label className="label">Password</label>
+          <div>
+            <input
+              className="input"
+              type="password"
+              placeholder="password"
+              onChange={(e) =>
+                setUserInputs({
+                  ...userInputs,
+                  password: e.target.value,
+                })
+              }
+              required
+            />
+          </div>
+        </div>
+
+        <div className="field">
+          <div className="control">
+            <Button className="button" type="submit">
+              Register
+            </Button>
+          </div>
+        </div>
+      </form>
     </section>
   );
 };

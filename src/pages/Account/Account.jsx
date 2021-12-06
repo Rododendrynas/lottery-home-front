@@ -128,7 +128,7 @@ const Account = () => {
         </Notification>
       )}
       <div className="container">
-        <Menu logo={logo} links={links} signout={signout} />
+        <Menu logo={logo} signout={signout} />
         {loading && <Loading />}
         {!!nickname && (
           <h1 className="nickname">Hi, {nickname}! Let's play!</h1>

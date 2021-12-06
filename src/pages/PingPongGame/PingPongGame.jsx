@@ -31,6 +31,9 @@ const PingPongGame = () => {
   const account = 'fas fa-user';
   const signout = 'fas fa-sign-out-alt';
 
+  const range = 45;
+  const count = 5;
+
   // Get user id from token
   const userId = getUserIdFromToken(authContext.token);
 
@@ -58,13 +61,13 @@ const PingPongGame = () => {
     getNickname();
   }, [userId, navigate, getNickname]);
 
-  const getRandomNumbers = (num, pool) =>
+  const getRandomNumbers = (count, range) =>
     fetch(
       process.env.REACT_APP_BASE_URL +
         '/v1/content/pingpong/' +
-        num +
+        count +
         '/' +
-        pool +
+        range +
         '/',
       {
         method: 'POST',
@@ -189,7 +192,7 @@ const PingPongGame = () => {
             type="submit"
             onClick={(e) => {
               setError();
-              !!userInputs && getRandomNumbers(5, 45);
+              !!userInputs && getRandomNumbers(count, range);
             }}
           >
             Try your luck!
