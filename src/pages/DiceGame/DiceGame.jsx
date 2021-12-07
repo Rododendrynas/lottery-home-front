@@ -100,7 +100,9 @@ const DiceGame = () => {
       {loading && <Loading />}
       <Menu logo={logo} account={account} signout={signout} />
       {loading && <Loading />}
-      {!!nickname && <h1 className="nickname">Hi, {nickname}! Let's play!</h1>}
+      {!!nickname && (
+        <h1 className="nickname">Hi, {nickname}! Let's play dice!</h1>
+      )}
 
       <div id="dicePlatform" className="wrapper">
         {!!data &&

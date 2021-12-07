@@ -1,8 +1,9 @@
 import React, { useEffect, useContext, useState, useCallback } from 'react';
-import { AuthContext } from '../../contexts/auth';
-import { Menu, Notification, Loading, Circle, Button } from '../../components';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
+
+import { AuthContext } from '../../contexts/auth';
+import { Menu, Notification, Loading, Circle, Button } from '../../components';
 import { getUserNickname } from '../../shared';
 
 import './PingPongGame.css';
@@ -115,7 +116,7 @@ const PingPongGame = () => {
       <Menu logo={logo} account={account} signout={signout} />
       {loading && <Loading />}
       {!!nickname && (
-        <h1 className="nickname">Hi, {nickname}! Insert your own numbers!</h1>
+        <h1 className="nickname">Hi, {nickname}! Enter your own numbers!</h1>
       )}
 
       <form
