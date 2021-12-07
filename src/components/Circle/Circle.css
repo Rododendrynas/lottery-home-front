@@ -2,15 +2,32 @@
   width: 6rem;
   height: 4rem;
   border: 1px solid var(--primary-color-gold);
-  margin-right: 3rem;
+  margin-right: 0.5rem;
   border-radius: 3rem;
   text-align: center;
   font-size: 25px;
   font-weight: bold;
   box-sizing: border-box;
   cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .circle:nth-child(5n) {
   margin-right: 0;
+}
+.circle h1.luckyNumber {
+  font-size: 22px;
+}
+
+@media screen and (min-width: 40rem) {
+  .circle h1.luckyNumber {
+    font-size: 2em;
+  }
+
+  .circle {
+    margin-right: 3rem;
+  }
 }

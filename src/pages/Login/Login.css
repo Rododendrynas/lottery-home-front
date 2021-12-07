@@ -3,16 +3,24 @@ textarea {
   margin-bottom: 1rem;
   width: 100%;
   border-radius: 0.3rem;
-  padding: 0.7rem;
+  padding: 0.3rem;
   box-sizing: border-box;
 }
 
 .form {
-  max-width: 40%;
+  max-width: 95%;
   margin: 0 auto;
-  margin-top: 3rem;
+  margin-top: 2rem;
 }
 
-.label {
-  font-weight: bold;
+@media screen and (min-width: 40rem) {
+  .input,
+  textarea {
+    padding: 0.7rem;
+  }
+
+  .form {
+    max-width: 40%;
+    margin-top: 3rem;
+  }
 }

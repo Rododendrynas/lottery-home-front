@@ -16,13 +16,19 @@ body {
 }
 
 .wrapper {
-  max-width: 45%;
+  max-width: 95%;
   margin: 0 auto;
   text-align: center;
 }
 
-.nickname {
+h1.nickname,
+h1.wrapper {
   text-align: center;
+  font-size: 1.5em;
+}
+
+div.winner h1 {
+  margin: 0;
 }
 
 footer {
@@ -32,4 +38,15 @@ footer {
   width: 100%;
   text-align: center;
   padding: 1rem;
+}
+
+@media screen and (min-width: 40rem) {
+  .wrapper {
+    max-width: 45%;
+  }
+
+  h1.nickname,
+  h1.wrapper {
+    font-size: 2em;
+  }
 }

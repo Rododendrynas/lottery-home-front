@@ -200,7 +200,7 @@ const PingPongGame = () => {
         </div>
       </form>
 
-      <h1 className="wrapper">Your random lucky numbers are:</h1>
+      <h1 className="random wrapper">Your random lucky numbers are:</h1>
       <div id="pingpongPlatform" className="wrapper">
         {!!data &&
           Object.keys(data).length !== 0 &&

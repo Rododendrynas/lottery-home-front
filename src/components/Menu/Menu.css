@@ -6,8 +6,13 @@
 }
 
 img {
-  height: 6rem;
+  height: 4rem;
   cursor: pointer;
+  padding-left: 1rem;
+}
+
+.menu img {
+  height: 3rem;
 }
 
 a {
@@ -27,4 +32,10 @@ i {
   font-size: 24px;
   cursor: pointer;
   margin-left: 2rem;
+}
+
+@media screen and (min-width: 40rem) {
+  img {
+    height: 6rem;
+  }
 }
