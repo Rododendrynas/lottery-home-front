@@ -28,7 +28,7 @@ const Register = () => {
         }
         navigate('/login');
       })
-      .catch((err) => setError(err))
+      .catch((error) => setError(error))
       .finally(() => e.target.reset());
   };
 
