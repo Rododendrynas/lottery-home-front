@@ -18,6 +18,7 @@ const getUserIdFromToken = (token) => {
 };
 
 const Account = () => {
+  console.log('Step1');
   const authContext = useContext(AuthContext);
 
   const [userInputs, setUserInputs] = useState();
@@ -27,11 +28,17 @@ const Account = () => {
   const [message, setMessage] = useState();
   const [nickname, setNickname] = useState();
 
+  console.log('Step2');
+
   const logo = process.env.REACT_APP_LOGO_URL;
   const signout = 'fas fa-sign-out-alt';
 
+  console.log('Step3');
+
   // Get user id from token
   const userId = getUserIdFromToken(authContext.token);
+
+  console.log('Step4');
 
   // Calback function for getting user nickname
   const getNickname = useCallback(() => {
@@ -48,14 +55,19 @@ const Account = () => {
     gun();
   }, [userId, setNickname, setLoading, authContext.token]);
 
+  console.log('Step5');
+
   //Navigate to login page if token is not set
   useEffect(() => {
+    console.log('Step5.1:' + userId);
     if (!userId) {
       navigate('/login');
     }
     //Get user nickname
     getNickname();
   }, [userId, navigate, getNickname]);
+
+  console.log('Step6');
 
   //Function for user to change his nickname. Get and set a new nickname from database.
   const changeNickname = (userId, userInputs) => {
