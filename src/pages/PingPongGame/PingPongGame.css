@@ -16,7 +16,7 @@
   height: 3rem;
   display: inline-block;
   border: 1px solid var(--primary-color-gold);
-  background: black;
+  background: var(--color-black);
   color: var(--primary-color-gold);
   font-size: 18px;
   text-align: center;
