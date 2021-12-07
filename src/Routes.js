@@ -3,12 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import PrivateRoute from './components/PrivateRoute';
 
-import Home from './pages/Home/Home';
-import Login from './pages/Login/Login';
-import Register from './pages/Register/Register';
-import DiceGame from './pages/DiceGame/DiceGame';
-import Account from './pages/Account/Account';
-import PingPongGame from './pages/PingPongGame/PingPongGame';
+import { Home, Login, Register, Dice, Account, PingPong } from './pages/';
 
 const PageRouter = () => {
   return (
@@ -30,7 +25,7 @@ const PageRouter = () => {
           path="/dice"
           element={
             <PrivateRoute>
-              <DiceGame />
+              <Dice />
             </PrivateRoute>
           }
         />
@@ -39,7 +34,7 @@ const PageRouter = () => {
           path="/pingpong"
           element={
             <PrivateRoute>
-              <PingPongGame />
+              <PingPong />
             </PrivateRoute>
           }
         />
