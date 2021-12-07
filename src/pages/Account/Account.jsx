@@ -34,32 +34,43 @@ const Account = () => {
   const signout = 'fas fa-sign-out-alt';
 
   console.log('Step3');
+  console.log('Step3.1: ' + authContext.token);
 
   // Get user id from token
   const userId = getUserIdFromToken(authContext.token);
 
   console.log('Step4');
+  console.log('Step4.1: ' + userId);
 
   // Calback function for getting user nickname
   const getNickname = useCallback(() => {
+    console.log('Step4.2');
     const gun = async () => {
+      console.log('Step4.3');
       const data = await getUserNickname(userId, authContext.token);
 
+      console.log('Step4.4');
+      console.log('Step4.5: ' + JSON.stringify(data));
       if (data.nickname) {
+        console.log('Step4.6');
         setNickname(data.nickname);
         setLoading(false);
+        console.log('Step4.7');
       } else {
+        console.log('Step4.8');
         setError(data.error || data.err || 'Nickname not set');
       }
     };
     gun();
+    console.log('Step4.9');
   }, [userId, setNickname, setLoading, authContext.token]);
 
   console.log('Step5');
 
   //Navigate to login page if token is not set
   useEffect(() => {
-    console.log('Step5.1:' + userId);
+    console.log('Step5.1');
+    console.log('Step5.11:' + userId);
     if (!userId) {
       navigate('/login');
     }
