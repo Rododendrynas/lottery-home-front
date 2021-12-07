@@ -9,7 +9,7 @@ import { getUserNickname } from '../../shared';
 const getUserIdFromToken = (token) => {
   try {
     const jwt = jwt_decode(token);
-    console.log(token);
+
     return jwt.id;
   } catch (e) {
     return null;
@@ -17,7 +17,6 @@ const getUserIdFromToken = (token) => {
 };
 
 const Account = () => {
-  console.log('Step1');
   const authContext = useContext(AuthContext);
 
   const [userInputs, setUserInputs] = useState();
@@ -27,57 +26,35 @@ const Account = () => {
   const [message, setMessage] = useState();
   const [nickname, setNickname] = useState();
 
-  console.log('Step2');
-
   const logo = process.env.REACT_APP_LOGO_URL;
   const signout = 'fas fa-sign-out-alt';
-
-  console.log('Step3');
-  console.log('Step3.1: ' + authContext.token);
 
   // Get user id from token
   const userId = getUserIdFromToken(authContext.token);
 
-  console.log('Step4');
-  console.log('Step4.1: ' + userId);
-
   // Calback function for getting user nickname
   const getNickname = useCallback(() => {
-    console.log('Step4.2');
     const gun = async () => {
-      console.log('Step4.3');
       const data = await getUserNickname(userId, authContext.token);
 
-      console.log('Step4.4');
-      console.log('Step4.5: ' + JSON.stringify(data));
       if (data.nickname) {
-        console.log('Step4.6');
         setNickname(data.nickname);
         setLoading(false);
-        console.log('Step4.7');
       } else {
-        console.log('Step4.8');
         setError(data.error || data.err || 'Nickname not set');
       }
     };
     gun();
-    console.log('Step4.9');
   }, [userId, setNickname, setLoading, authContext.token]);
-
-  console.log('Step5');
 
   //Navigate to login page if token is not set
   useEffect(() => {
-    console.log('Step5.1');
-    console.log('Step5.11:' + userId);
     if (!userId) {
       navigate('/login');
     }
     //Get user nickname
     getNickname();
   }, [userId, navigate, getNickname]);
-
-  console.log('Step6');
 
   //Function for user to change his nickname. Get and set a new nickname from database.
   const changeNickname = (userId, userInputs) => {
