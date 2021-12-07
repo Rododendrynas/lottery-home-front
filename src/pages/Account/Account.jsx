@@ -1,11 +1,10 @@
-import React, { useContext, useState, useCallback } from 'react';
+import React, { useEffect, useContext, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/auth';
 import jwt_decode from 'jwt-decode';
 
 import { Button, Menu, Notification, Loading } from '../../components';
 import { getUserNickname } from '../../shared';
-import { useEffect } from 'react/cjs/react.development';
 
 const getUserIdFromToken = (token) => {
   try {
